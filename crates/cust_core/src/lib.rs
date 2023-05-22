@@ -3,6 +3,9 @@
 pub use _hidden::*;
 pub use cust_derive::DeviceCopyCore as DeviceCopy;
 
+#[cfg(feature="nalgebra")]
+pub mod algebra;
+
 #[doc(hidden)]
 pub mod _hidden {
     use core::marker::PhantomData;

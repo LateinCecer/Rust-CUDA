@@ -29,7 +29,10 @@ impl_glam = ["cust_core/glam", "glam"]
 impl_mint = ["cust_core/mint", "mint"]
 impl_vek = ["cust_core/vek", "vek"]
 impl_half = ["cust_core/half"]
+impl_nalgebra = ["cust_core/nalgebra"]
 impl_num_complex = ["cust_core/num-complex", "num-complex"]
+
+
 
 [build-dependencies]
 find_cuda_helper = { path = "../find_cuda_helper", version = "0.2" }
