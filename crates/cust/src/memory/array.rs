@@ -135,6 +135,46 @@ impl ArrayFormat {
             // there are literally no docs on what nv12 is???
             // it seems to be something with multiplanar arrays, needs some investigation
             CUarray_format_enum::CU_AD_FORMAT_NV12 => panic!("nv12 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_UNORM_INT8X1 => panic!("unorm int8x1 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_UNORM_INT8X2 => panic!("unorm int8x2 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_UNORM_INT8X4 => panic!("unorm int8x4 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_UNORM_INT16X1 => panic!("unorm int16x1 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_UNORM_INT16X2 => panic!("unorm int16x2 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_UNORM_INT16X4 => panic!("unorm int16x4 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_SNORM_INT8X1 => panic!("snorm int8x1 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_SNORM_INT8X2 => panic!("snorm int8x2 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_SNORM_INT8X4 => panic!("snorm int8x4 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_SNORM_INT16X1 => panic!("snorm int16x1 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_SNORM_INT16X2 => panic!("snorm int16x2 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_SNORM_INT16X4 => panic!("snorm int16x4 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC1_UNORM => panic!("bc1 unorm is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC1_UNORM_SRGB => panic!("bc1 unorm srgb is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC2_UNORM => panic!("bc2 unorm is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC2_UNORM_SRGB => panic!("bc2 unorm srgb is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC3_UNORM => panic!("bc3 unorm is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC3_UNORM_SRGB => panic!("bc3 unorm srgb is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC4_UNORM => panic!("bc4 unorm is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC4_SNORM => panic!("bc4 snorm is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC5_UNORM => panic!("bc5 unorm is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC5_SNORM => panic!("bc5 snorm is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC6H_UF16 => panic!("bc6h uf16 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC6H_SF16 => panic!("bc6h sf16 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC7_UNORM => panic!("bc7 unorm is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_BC7_UNORM_SRGB => panic!("bc7 unorm srgb is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_P010 => panic!("p010 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_P016 => panic!("p016 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_NV16 => panic!("nv16 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_P210 => panic!("p210 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_P216 => panic!("p216 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_YUY2 => panic!("yuy2 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_Y210 => panic!("y210 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_Y216 => panic!("y216 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_AYUV => panic!("ayuv is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_Y410 => panic!("y410 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_Y416 => panic!("y416 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_Y444_PLANAR8 => panic!("y444 planar8 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_Y444_PLANAR10 => panic!("y444 planar10 is not supported yet"),
+            CUarray_format_enum::CU_AD_FORMAT_MAX => panic!("max is not supported yet"),
         }
     }
 
@@ -155,7 +195,7 @@ impl ArrayFormat {
 
 bitflags::bitflags! {
     /// Flags which modify the behavior of CUDA array creation.
-    #[derive(Default)]
+    #[derive(Default, Copy, Clone, Debug, PartialEq)]
     pub struct ArrayObjectFlags: c_uint {
         /// Enables creation of layered CUDA arrays. When this flag is set, depth specifies the
         /// number of layers, not the depth of a 3D array.

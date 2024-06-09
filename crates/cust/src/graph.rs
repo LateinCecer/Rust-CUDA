@@ -7,6 +7,7 @@ use std::{
     path::Path,
     ptr,
 };
+use cust_raw::CUgraphNodeType_enum;
 
 use crate::{
     error::{CudaResult, ToResult},
@@ -59,6 +60,8 @@ pub struct KernelInvocation {
     func: cuda::CUfunction,
     params: Box<*mut c_void>,
     params_len: Option<usize>,
+    kern: cuda::CUkernel,
+    ctx: cuda::CUcontext,
 }
 
 impl KernelInvocation {
@@ -70,6 +73,8 @@ impl KernelInvocation {
         func: cuda::CUfunction,
         params: Box<*mut c_void>,
         params_len: usize,
+        kern: cuda::CUkernel,
+        ctx: cuda::CUcontext,
     ) -> Self {
         Self {
             block_dim,
@@ -78,6 +83,8 @@ impl KernelInvocation {
             func,
             params,
             params_len: Some(params_len),
+            kern,
+            ctx,
         }
     }
 
@@ -93,6 +100,8 @@ impl KernelInvocation {
             kernelParams: Box::into_raw(self.params),
             sharedMemBytes: self.shared_mem_bytes,
             extra: ptr::null_mut(),
+            kern: self.kern,
+            ctx: self.ctx,
         }
     }
 
@@ -111,6 +120,8 @@ impl KernelInvocation {
             params: Box::from_raw(raw.kernelParams),
             shared_mem_bytes: raw.sharedMemBytes,
             params_len: None,
+            kern: raw.kern,
+            ctx: raw.ctx,
         }
     }
 }
@@ -167,6 +178,8 @@ pub enum GraphNodeType {
     MemoryAllocation,
     /// Frees some memory.
     MemoryFree,
+    BatchMemOp,
+    Conditional,
 }
 
 impl GraphNodeType {
@@ -189,6 +202,8 @@ impl GraphNodeType {
             }
             cuda::CUgraphNodeType::CU_GRAPH_NODE_TYPE_MEM_ALLOC => GraphNodeType::MemoryAllocation,
             cuda::CUgraphNodeType::CU_GRAPH_NODE_TYPE_MEM_FREE => GraphNodeType::MemoryFree,
+            cuda::CUgraphNodeType_enum::CU_GRAPH_NODE_TYPE_BATCH_MEM_OP => GraphNodeType::BatchMemOp,
+            cuda::CUgraphNodeType_enum::CU_GRAPH_NODE_TYPE_CONDITIONAL => GraphNodeType::Conditional,
         }
     }
 
@@ -207,6 +222,8 @@ impl GraphNodeType {
             Self::SemaphoreWait => cuda::CUgraphNodeType::CU_GRAPH_NODE_TYPE_EXT_SEMAS_WAIT,
             Self::MemoryAllocation => cuda::CUgraphNodeType::CU_GRAPH_NODE_TYPE_MEM_ALLOC,
             Self::MemoryFree => cuda::CUgraphNodeType::CU_GRAPH_NODE_TYPE_MEM_FREE,
+            Self::BatchMemOp => cuda::CUgraphNodeType::CU_GRAPH_NODE_TYPE_BATCH_MEM_OP,
+            Self::Conditional => cuda::CUgraphNodeType::CU_GRAPH_NODE_TYPE_CONDITIONAL,
         }
     }
 }
@@ -320,7 +337,7 @@ impl Graph {
         let mut raw = MaybeUninit::uninit();
 
         unsafe {
-            cuda::cuGraphCreate(raw.as_mut_ptr(), flags.bits).to_result()?;
+            cuda::cuGraphCreate(raw.as_mut_ptr(), flags.bits()).to_result()?;
 
             Ok(Self {
                 raw: raw.assume_init(),
@@ -385,7 +402,7 @@ impl Graph {
             let deps_ptr = deps.as_ptr().cast();
             let mut node = MaybeUninit::<GraphNode>::uninit();
             let params = invocation.to_raw();
-            cuda::cuGraphAddKernelNode(
+            cuda::cuGraphAddKernelNode_v2(
                 node.as_mut_ptr().cast(),
                 self.raw,
                 deps_ptr,
@@ -466,7 +483,7 @@ impl Graph {
         );
         unsafe {
             let mut params = MaybeUninit::uninit();
-            cuda::cuGraphKernelNodeGetParams(node.to_raw(), params.as_mut_ptr());
+            cuda::cuGraphKernelNodeGetParams_v2(node.to_raw(), params.as_mut_ptr());
             Ok(KernelInvocation::from_raw(params.assume_init()))
         }
     }

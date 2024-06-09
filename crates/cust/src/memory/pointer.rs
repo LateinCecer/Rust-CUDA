@@ -72,7 +72,7 @@ impl<T: ?Sized + DeviceCopy> DevicePointer<T> {
     /// use std::ptr;
     /// unsafe {
     ///     let null : *mut u64 = ptr::null_mut();
-    ///     assert!(DevicePointer::wrap(null).is_null());
+    ///     assert!(DevicePointer::<i32>::from_raw(null as u64).is_null());
     /// }
     /// ```
     pub fn is_null(self) -> bool {
@@ -129,7 +129,7 @@ impl<T: ?Sized + DeviceCopy> DevicePointer<T> {
     where
         T: Sized,
     {
-        let ptr = self.ptr + (count as usize * size_of::<T>()) as u64;
+        let ptr = self.ptr + (count * size_of::<T>() as isize) as u64;
         Self {
             ptr,
             marker: PhantomData,
@@ -172,7 +172,7 @@ impl<T: ?Sized + DeviceCopy> DevicePointer<T> {
     {
         let ptr = self
             .ptr
-            .wrapping_add((count as usize * size_of::<T>()) as u64);
+            .wrapping_add((count * size_of::<T>() as isize) as u64);
         Self {
             ptr,
             marker: PhantomData,
@@ -258,7 +258,7 @@ impl<T: ?Sized + DeviceCopy> DevicePointer<T> {
     where
         T: Sized,
     {
-        self.offset((count as isize).wrapping_neg())
+        self.wrapping_offset((count as isize).wrapping_neg())
     }
 
     /// Calculates the offset from a pointer using wrapping arithmetic.

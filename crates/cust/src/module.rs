@@ -288,8 +288,9 @@ impl Module {
     /// # fn main() -> Result<(), Box<dyn Error>> {
     /// # let _ctx = quick_init()?;
     /// use cust::module::Module;
-    /// let ptx = std::fs::read("./resources/add.ptx")?;
-    /// let module = Module::from_ptx(&ptx, &[])?;
+    /// let ptx_bytes = std::fs::read("./resources/add.ptx")?;
+    /// let ptx = std::str::from_utf8(&ptx_bytes).unwrap();
+    /// let module = Module::from_ptx(ptx, &[])?;
     /// # Ok(())
     /// # }
     /// ```

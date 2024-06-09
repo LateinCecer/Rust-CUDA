@@ -284,9 +284,10 @@ impl<T: DeviceCopy> DeviceBox<T> {
     /// ```
     /// # let _context = cust::quick_init().unwrap();
     /// use cust::memory::*;
-    /// let x = DeviceBox::new(&5).unwrap();
-    /// let ptr = DeviceBox::into_device(x).as_raw_mut();
-    /// let x = unsafe { DeviceBox::from_raw(ptr) };
+    /// let x = DeviceBox::new(&5i32).unwrap();
+    /// let ptr = DeviceBox::into_device(x).as_raw();
+    /// let x_new: DeviceBox<i32> = unsafe { DeviceBox::from_raw(ptr) };
+    /// assert_eq!(x_new.as_host_value().unwrap(), 5i32);
     /// ```
     pub unsafe fn from_raw(ptr: cust_raw::CUdeviceptr) -> Self {
         DeviceBox {

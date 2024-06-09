@@ -75,7 +75,7 @@ impl<T: DeviceCopy> DeviceSlice<T> {
     /// # let _context = cust::quick_init().unwrap();
     /// use cust::memory::*;
     /// let a = DeviceBuffer::from_slice(&[1, 2, 3]).unwrap();
-    /// println!("{:p}", a.as_ptr());
+    /// println!("{:?}", a.as_raw_ptr());
     /// ```
     pub fn as_device_ptr(&self) -> DevicePointer<T> {
         self.ptr
