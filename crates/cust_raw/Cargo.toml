@@ -1,6 +1,6 @@
 [package]
 name = "cust_raw"
-version = "0.11.3"
+version = "0.11.4"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "Low level bindings to the CUDA Driver API"
