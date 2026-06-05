@@ -1,6 +1,6 @@
 [package]
 name = "cust_core"
-version = "0.1.2"
+version = "0.1.3"
 edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "Core library for cust that can be shared across CPU and GPU"

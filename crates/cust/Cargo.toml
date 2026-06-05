@@ -1,6 +1,6 @@
 [package]
 name = "cust"
-version = "0.3.3"
+version = "0.3.4"
 # Big thanks to the original author of rustacuda <3
 authors = [
     "Riccardo D'Ambrosio <rdambrosio016@gmail.com>",
@@ -13,7 +13,7 @@ repository = "https://github.com/Rust-GPU/Rust-CUDA"
 readme = "../../README.md"
 
 [dependencies]
-cust_core = { path = "../cust_core", version = "0.1.2"}
+cust_core = { path = "../cust_core", version = "0.1.3"}
 cust_raw = { path = "../cust_raw", version = "0.11.4"}
 bitflags = "2.4.1"
 cust_derive = { path = "../cust_derive", version = "0.2.1" }
